@@ -1,0 +1,4 @@
+name: MCXMPP
+main: tk.torche.plugin.MCXMPP
+version: 1.0
+commands:
