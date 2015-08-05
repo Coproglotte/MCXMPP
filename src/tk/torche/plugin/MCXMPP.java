@@ -19,6 +19,11 @@ public class MCXMPP extends JavaPlugin {
 		System.out.println("[MCXMPP v0.1] Plugin loaded.");
 	}
 
+	@Override
+	public void onDisable() {
+		System.out.println("[MXCMPP v0.1] Plugin unloaded.");
+	}
+
 	public Config getLoadedConfig() {
 		return this.config;
 	}
