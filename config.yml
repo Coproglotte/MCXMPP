@@ -1,0 +1,11 @@
+# The XMPP server to connect to
+host: example.com
+
+# Port to connect to the server (default 5222)
+port: 5222
+
+# Username to use on the server
+username: user
+
+# Password of the user
+password: pass
