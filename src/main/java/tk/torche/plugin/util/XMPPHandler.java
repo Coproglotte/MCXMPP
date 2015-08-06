@@ -22,6 +22,7 @@ public class XMPPHandler {
 				.setHost(config.getHost())
 				.setPort(config.getPort())
 				.build();
+		AbstractXMPPConnection conn = new XMPPTCPConnection(connConf);
 	}
 
 	public void connect() {
