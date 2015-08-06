@@ -35,9 +35,29 @@
       <version>1.8.8-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
+	<dependency>
+	  <groupId>xpp3</groupId>
+	  <artifactId>xpp3</artifactId>
+	  <version>1.1.4c</version>
+    </dependency>
+    <dependency>
+	  <groupId>org.jxmpp</groupId>
+	  <artifactId>jxmpp-core</artifactId>
+	  <version>0.4.2</version>
+    </dependency>
+    <dependency>
+	  <groupId>org.jxmpp</groupId>
+	  <artifactId>jxmpp-util-cache</artifactId>
+	  <version>0.4.2</version>
+    </dependency>
+<!--    <dependency>
+      <groupId>org.ogce</groupId>
+      <artifactId>xpp3</artifactId>
+      <version>1.1.6</version>
+    </dependency>-->
   </dependencies>
   <build>
-  <finalName>$(project.name)</finalName>
+  <finalName>${project.name}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -46,7 +66,12 @@
         <configuration>
           <artifactSet>
             <includes>
-              <include>org.igniterealtime.smack:smack</include>
+              <include>org.igniterealtime.smack:smack-core</include>
+              <include>org.igniterealtime.smack:smack-tcp</include>
+              <include>org.igniterealtime.smack:smack-extensions</include>
+              <include>xpp3:xpp3</include>
+              <include>org.jxmpp:jxmpp-core</include>
+              <include>org.jxmpp:jxmpp-util-cache</include>
             </includes>
           </artifactSet>
         </configuration>
@@ -60,5 +85,15 @@
         </executions>
       </plugin>
     </plugins>
+    <resources>
+      <resource>
+        <directory>resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>plugin.yml</include>
+          <include>config.yml</include>
+        </includes>
+      </resource>
+    </resources>
   </build>
 </project>
