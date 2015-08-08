@@ -1,6 +1,10 @@
 # The XMPP server to connect to
 host: example.com
 
+# This may be necessary on some server.
+# It may be the same value as host.
+#service: example.com
+
 # Port to connect to the server (default 5222)
 port: 5222
 

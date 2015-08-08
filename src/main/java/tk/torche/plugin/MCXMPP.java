@@ -13,6 +13,7 @@ public class MCXMPP extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+	    this.saveDefaultConfig();
 		config = new Config(this.getConfig());
 		XMPPh = new XMPPHandler(this);
 		XMPPh.connect();
@@ -21,6 +22,7 @@ public class MCXMPP extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		XMPPh.disconnect();
 		System.out.println("[MXCMPP v0.1] Plugin unloaded.");
 	}
 
