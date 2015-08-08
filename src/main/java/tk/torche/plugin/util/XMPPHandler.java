@@ -41,8 +41,11 @@ public class XMPPHandler {
 			conn.connect();
 			conn.login(instance.getLoadedConfig().getUsername(),
 					connConf.getPassword(), "MCXMPP");
-			System.out.println("!!SÉCURISÉ : " + conn.isSecureConnection());
-		} catch (SmackException | IOException | XMPPException e) {
+		} catch (SmackException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (XMPPException e) {
 			e.printStackTrace();
 		}
 	}
