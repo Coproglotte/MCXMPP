@@ -1,15 +1,18 @@
-# The XMPP server to connect to
+# This is the XMPP server to connect to.
+# It may differ from the domain name in your JID (the part after the "@").
 host: example.com
 
-# This may be necessary on some server.
-# It may be the same value as host.
+# The service name of the XMPP server.
+# This may be necessary on some server. It may be the same value as host.
 #service: example.com
 
-# Port to connect to the server (default 5222)
+# The port to connect to the XMPP server.
+# default is 5222
 port: 5222
 
-# Username to use on the server
+# The username the plugin should use to connect on the server.
+# It mustn't be in the form "user@example.com". Just put the "user" part.
 username: user
 
-# Password of the user
+# The password of the user defined above.
 password: pass
