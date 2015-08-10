@@ -22,6 +22,8 @@ public class XMPPMessageListener {
 			@Override
 			public void processMessage(Message message) {
 				String sender = message.getFrom().substring(message.getFrom().indexOf('/') + 1);
+				if (sender.equals(muc.getNickname()))
+					return;
 				for (Player player : server.getOnlinePlayers())
 					player.sendMessage("(XMPP) " + sender
 							+ ": " + message.getBody());
