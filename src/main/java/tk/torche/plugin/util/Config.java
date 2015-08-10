@@ -5,18 +5,24 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
 
-	private String host;
-	private String service;
-	private int port;
-	private String username;
-	private String password;
+	private final String host;
+	private final String service;
+	private final int port;
+	private final String username;
+	private final String jid;
+	private final String password;
+	private final String channel;
+	private final String channelPassword;
 
 	public Config(FileConfiguration fileConf) {
 		this.host = fileConf.getString("host");
 		this.service = fileConf.getString("service");
 		this.port = fileConf.getInt("port");
 		this.username = fileConf.getString("username");
+		this.jid = this.username + "@" + this.service;
 		this.password = fileConf.getString("password");
+		this.channel = fileConf.getString("channel");
+		this.channelPassword = fileConf.getString("channelpassword");
 	}
 
 	public String getHost() {
@@ -31,6 +37,10 @@ public class Config {
 		return port;
 	}
 
+	public String getJid() {
+		return jid;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -39,4 +49,11 @@ public class Config {
 		return password;
 	}
 
+	public String getChannel() {
+		return channel;
+	}
+
+	public String getChannelPassword() {
+		return channelPassword;
+	}
 }

@@ -16,3 +16,10 @@ username: user
 
 # The password of the user defined above.
 password: pass
+
+# MCXMPP joins a MUC channel (Multi-User Chat) after connection.
+# This is the name of the channel to join.
+channel: channelname
+
+# If the channel is password-protected, provide the password here.
+#channelpassword: chanpass
