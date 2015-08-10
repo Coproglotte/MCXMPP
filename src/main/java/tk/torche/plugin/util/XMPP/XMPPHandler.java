@@ -1,4 +1,4 @@
-package tk.torche.plugin.util;
+package tk.torche.plugin.util.XMPP;
 
 import java.io.IOException;
 
@@ -13,6 +13,7 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
 
 import tk.torche.plugin.MCXMPP;
+import tk.torche.plugin.util.Config;
 
 
 public class XMPPHandler {
@@ -63,6 +64,8 @@ public class XMPPHandler {
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		}
+
+		new XMPPMessageListener(instance.getServer(), muc);
 	}
 
 	public void disconnect() {
@@ -78,5 +81,9 @@ public class XMPPHandler {
 
 	public AbstractXMPPConnection getXMPPConnection() {
 		return conn;
+	}
+
+	public MultiUserChat getMuc() {
+		return this.muc;
 	}
 }
