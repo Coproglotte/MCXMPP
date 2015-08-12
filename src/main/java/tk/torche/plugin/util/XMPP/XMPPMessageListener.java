@@ -21,9 +21,12 @@ public class XMPPMessageListener {
 		muc.addMessageListener(new MessageListener() {
 			@Override
 			public void processMessage(Message message) {
+				// Do nothing if the Minecraft server is empty
+				if (server.getOnlinePlayers().isEmpty()) return;
+				// Keep only the nickname part of the JID
 				String sender = message.getFrom().substring(message.getFrom().indexOf('/') + 1);
-				if (sender.equals(muc.getNickname()))
-					return;
+				// Don't re-send messages sent from MCXMPP
+				if (sender.equals(muc.getNickname())) return;
 				for (Player player : server.getOnlinePlayers())
 					player.sendMessage("(XMPP) " + sender
 							+ ": " + message.getBody());

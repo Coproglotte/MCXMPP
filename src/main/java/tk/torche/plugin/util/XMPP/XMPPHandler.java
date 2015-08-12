@@ -64,8 +64,6 @@ public class XMPPHandler {
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		}
-
-		new XMPPMessageListener(instance.getServer(), muc);
 	}
 
 	public void disconnect() {
@@ -79,11 +77,15 @@ public class XMPPHandler {
 		}
 	}
 
-	public AbstractXMPPConnection getXMPPConnection() {
-		return conn;
-	}
-
 	public MultiUserChat getMuc() {
 		return this.muc;
+	}
+
+	public void sendXMPPMessage(String message) {
+		try {
+			getMuc().sendMessage(message);
+		} catch (NotConnectedException e) {
+			e.printStackTrace();
+		}
 	}
 }
