@@ -83,7 +83,7 @@ public class XMPPHandler {
 
 	public void sendXMPPMessage(String message) {
 		try {
-			getMuc().sendMessage(message);
+			muc.sendMessage(message);
 		} catch (NotConnectedException e) {
 			e.printStackTrace();
 		}

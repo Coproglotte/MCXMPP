@@ -1,7 +1,6 @@
 package tk.torche.plugin.util.players;
 
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -30,10 +29,10 @@ public class PlayerPresenceListener implements Listener {
 				" left the game]");
 	}
 
-	@EventHandler (priority = EventPriority.LOW)
+	@EventHandler
 	public void onPlayerKick(PlayerKickEvent event) {	
 		XMPPh.sendXMPPMessage("[" + event.getPlayer().getDisplayName() +
 				" has been kicked from the server : " +
-				((PlayerKickEvent)event).getReason() + "]");
+				event.getReason() + "]");
 	}
 }

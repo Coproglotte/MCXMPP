@@ -27,14 +27,14 @@ public class MCXMPP extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerPresenceListener(XMPPh), this);
 		new XMPPMessageListener(getServer(), XMPPh.getMuc());
 
-		System.out.println("[MCXMPP v0.1] Plugin loaded.");
+		System.out.println("[MCXMPP v0.2] Plugin loaded.");
 	}
 
 	@Override
 	public void onDisable() {
 		XMPPh.disconnect();
 		HandlerList.unregisterAll();
-		System.out.println("[MXCMPP v0.1] Plugin unloaded.");
+		System.out.println("[MXCMPP v0.2] Plugin unloaded.");
 	}
 
 	public Config getLoadedConfig() {
