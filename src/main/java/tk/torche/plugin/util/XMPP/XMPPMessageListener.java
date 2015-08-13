@@ -6,6 +6,7 @@ import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 
+
 public class XMPPMessageListener {
 
 	private Server server;
@@ -27,10 +28,23 @@ public class XMPPMessageListener {
 				String sender = message.getFrom().substring(message.getFrom().indexOf('/') + 1);
 				// Don't re-send messages sent from MCXMPP
 				if (sender.equals(muc.getNickname())) return;
-				for (Player player : server.getOnlinePlayers())
-					player.sendMessage("(XMPP) " + sender
-							+ ": " + message.getBody());
+
+				if (message.getBody().startsWith("!cmd "))
+					sendMinecraftCommand(sender, message.getBody().substring(5));
+				else
+					sendMinecraftMessage(sender, message.getBody());
+
 			}
 		});
+	}
+
+	private void sendMinecraftCommand(String sender, String body) {
+		server.dispatchCommand(server.getConsoleSender(), body);
+	}
+
+	private void sendMinecraftMessage(String sender, String body) {
+		for (Player player : server.getOnlinePlayers())
+			player.sendMessage("(XMPP) " + sender
+					+ ": " + body);
 	}
 }
