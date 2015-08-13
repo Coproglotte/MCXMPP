@@ -3,6 +3,7 @@ package tk.torche.plugin.util.players;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import tk.torche.plugin.util.XMPP.XMPPHandler;
 
@@ -19,6 +20,13 @@ public class PlayerChatListener implements Listener {
 	public void onPlayerMessage(AsyncPlayerChatEvent event) {
 		String message = "<" + event.getPlayer().getDisplayName()
 				+ "> " + event.getMessage();
+		XMPPh.sendXMPPMessage(message);
+	}
+
+	@EventHandler
+	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+		String message = "[" + event.getPlayer().getDisplayName()
+				+ " sent command " + event.getMessage() + "]";
 		XMPPh.sendXMPPMessage(message);
 	}
 }
