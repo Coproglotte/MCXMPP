@@ -18,15 +18,15 @@ import tk.torche.plugin.util.Config;
 
 public class XMPPHandler {
 
-	private MCXMPP instance;
+	private MCXMPP mcxmpp;
 	private XMPPTCPConnectionConfiguration connConf;
 	private AbstractXMPPConnection conn;
 	private MultiUserChatManager mucManager;
 	private MultiUserChat muc;
 
 	public XMPPHandler(MCXMPP instance) {
-		this.instance = instance;
-		setXMPPConnectionConfiguration(instance.getLoadedConfig());
+		this.mcxmpp = instance;
+		setXMPPConnectionConfiguration(instance.getPluginConfig());
 	}
 
 	private void setXMPPConnectionConfiguration(Config config) {
@@ -36,34 +36,27 @@ public class XMPPHandler {
 						.setHost(config.getHost())
 						.setPort(config.getPort())
 						.setServiceName(config.getService())
-						.setDebuggerEnabled(true)
+//						.setDebuggerEnabled(true)
 						.build();
 		this.conn = new XMPPTCPConnection(connConf);
+		conn.setPacketReplyTimeout(10000);
 		new Java7SmackInitializer().initialize();
 	}
 
-	public void connect() {
-		try {
+	public void connect() throws XMPPException, SmackException, IOException {
 			// Connect and login
 			conn.connect();
-			conn.login(instance.getLoadedConfig().getUsername(),
+			conn.login(mcxmpp.getPluginConfig().getUsername(),
 					connConf.getPassword(), "MCXMPP");
 
 			// Join MUC channel
 			this.mucManager = MultiUserChatManager.getInstanceFor(this.conn);
-			this.muc = mucManager.getMultiUserChat(instance.getLoadedConfig().getChannel());
-			if (instance.getLoadedConfig().getChannelPassword() == null ||
-					instance.getLoadedConfig().getChannelPassword().isEmpty())
+			this.muc = mucManager.getMultiUserChat(mcxmpp.getPluginConfig().getChannel());
+			if (mcxmpp.getPluginConfig().getChannelPassword() == null ||
+					mcxmpp.getPluginConfig().getChannelPassword().isEmpty())
 				muc.join("MCXMPP");
 			else
-				muc.join("MCXMPP", instance.getLoadedConfig().getChannelPassword());
-		} catch (SmackException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (XMPPException e) {
-			e.printStackTrace();
-		}
+				muc.join("MCXMPP", mcxmpp.getPluginConfig().getChannelPassword());
 	}
 
 	public void disconnect() {
