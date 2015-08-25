@@ -1,11 +1,11 @@
-package tk.torche.plugin.util.players;
+package tk.torche.plugin.players;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import tk.torche.plugin.util.XMPP.XMPPHandler;
+import tk.torche.plugin.XMPP.XMPPHandler;
 
 
 public class PlayerChatListener implements Listener {

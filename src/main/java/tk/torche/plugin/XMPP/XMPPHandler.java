@@ -1,4 +1,4 @@
-package tk.torche.plugin.util.XMPP;
+package tk.torche.plugin.XMPP;
 
 import java.io.IOException;
 
@@ -12,8 +12,8 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
 
+import tk.torche.plugin.Config;
 import tk.torche.plugin.MCXMPP;
-import tk.torche.plugin.util.Config;
 
 
 public class XMPPHandler {

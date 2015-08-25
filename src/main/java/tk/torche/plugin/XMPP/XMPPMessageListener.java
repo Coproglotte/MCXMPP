@@ -1,4 +1,4 @@
-package tk.torche.plugin.util.XMPP;
+package tk.torche.plugin.XMPP;
 
 import net.md_5.bungee.api.ChatColor;
 

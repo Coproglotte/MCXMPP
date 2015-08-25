@@ -1,4 +1,4 @@
-package tk.torche.plugin.util.players;
+package tk.torche.plugin.players;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -6,7 +6,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import tk.torche.plugin.util.XMPP.XMPPHandler;
+import tk.torche.plugin.XMPP.XMPPHandler;
 
 
 public class PlayerPresenceListener implements Listener {

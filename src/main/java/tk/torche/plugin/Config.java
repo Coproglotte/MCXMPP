@@ -1,4 +1,4 @@
-package tk.torche.plugin.util;
+package tk.torche.plugin;
 
 import org.bukkit.configuration.file.FileConfiguration;
 

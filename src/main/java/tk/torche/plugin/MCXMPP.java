@@ -5,11 +5,10 @@ import java.util.logging.Level;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import tk.torche.plugin.util.Config;
-import tk.torche.plugin.util.XMPP.XMPPHandler;
-import tk.torche.plugin.util.XMPP.XMPPMessageListener;
-import tk.torche.plugin.util.players.PlayerChatListener;
-import tk.torche.plugin.util.players.PlayerPresenceListener;
+import tk.torche.plugin.XMPP.XMPPHandler;
+import tk.torche.plugin.XMPP.XMPPMessageListener;
+import tk.torche.plugin.players.PlayerChatListener;
+import tk.torche.plugin.players.PlayerPresenceListener;
 
 
 public class MCXMPP extends JavaPlugin {
