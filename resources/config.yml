@@ -1,14 +1,5 @@
-# This is the XMPP server to connect to.
-# It may differ from the domain name in your JID (the part after the "@").
-host: example.com
-
 # The service name of the XMPP server.
-# This may be necessary on some server. It may be the same value as host.
-#service: example.com
-
-# The port to connect to the XMPP server.
-# default is 5222
-port: 5222
+service: example.com
 
 # The username the plugin should use to connect on the server.
 # It mustn't be in the form "user@example.com". Just put the "user" part.
@@ -16,6 +7,9 @@ username: user
 
 # The password of the user defined above.
 password: pass
+
+# The nickname under which MCXMPP will appear in MUC channels.
+nickname: MCXMPP
 
 # MCXMPP joins a MUC channel (Multi-User Chat) after connection.
 # This is the name of the channel to join.

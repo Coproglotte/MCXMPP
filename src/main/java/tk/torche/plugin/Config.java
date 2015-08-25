@@ -9,6 +9,7 @@ public class Config {
 	private final String username;
 	private final String jid;
 	private final String password;
+	private final String nickname;
 	private final String channel;
 	private final String channelPassword;
 	private final String mcChatFormat;
@@ -18,6 +19,7 @@ public class Config {
 		this.username = fileConf.getString("username");
 		this.jid = this.username + "@" + this.service;
 		this.password = fileConf.getString("password");
+		this.nickname = fileConf.getString("nickname");
 		this.channel = fileConf.getString("channel");
 		this.channelPassword = fileConf.getString("channel-password");
 		this.mcChatFormat = fileConf.getString("mc-chat-format");
@@ -37,6 +39,10 @@ public class Config {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public String getNickname() {
+		return nickname;
 	}
 
 	public String getChannel() {

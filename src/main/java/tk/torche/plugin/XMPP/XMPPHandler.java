@@ -62,9 +62,9 @@ public class XMPPHandler {
 		this.muc = mucManager.getMultiUserChat(config.getChannel());
 		if (config.getChannelPassword() == null ||
 				config.getChannelPassword().isEmpty())
-			muc.join("MCXMPP");
+			muc.join(config.getNickname());
 		else
-			muc.join("MCXMPP", config.getChannelPassword());
+			muc.join(config.getNickname(), config.getChannelPassword());
 	}
 
 	public void disconnect() {
