@@ -1,5 +1,7 @@
 package tk.torche.plugin.XMPP;
 
+import java.util.logging.Level;
+
 import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Server;
@@ -47,6 +49,7 @@ public class XMPPMessageListener {
 
 	private void sendMinecraftMessage(String sender, String body) {
 		String message = mcChatFormat.replace("%s", sender).replace("%m", body);
+		server.getLogger().log(Level.INFO, message);
 		for (Player player : server.getOnlinePlayers()) {
 			player.sendMessage(message);
 		}

@@ -13,23 +13,22 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
 
 import tk.torche.plugin.Config;
-import tk.torche.plugin.MCXMPP;
 
 
 public class XMPPHandler {
 
-	private MCXMPP mcxmpp;
+	private Config config;
 	private XMPPTCPConnectionConfiguration connConf;
 	private AbstractXMPPConnection conn;
 	private MultiUserChatManager mucManager;
 	private MultiUserChat muc;
 
-	public XMPPHandler(MCXMPP instance) {
-		this.mcxmpp = instance;
-		setXMPPConnectionConfiguration(instance.getPluginConfig());
+	public XMPPHandler(Config config) {
+		this.config = config;
+		setXMPPConnectionConfiguration();
 	}
 
-	private void setXMPPConnectionConfiguration(Config config) {
+	private void setXMPPConnectionConfiguration() {
 		this.connConf = XMPPTCPConnectionConfiguration.builder()
 				.setUsernameAndPassword(config.getJid(),
 						config.getPassword())
@@ -44,19 +43,19 @@ public class XMPPHandler {
 	}
 
 	public void connect() throws XMPPException, SmackException, IOException {
-			// Connect and login
-			conn.connect();
-			conn.login(mcxmpp.getPluginConfig().getUsername(),
-					connConf.getPassword(), "MCXMPP");
+		// Connect and login
+		conn.connect();
+		conn.login(config.getUsername(),
+				connConf.getPassword(), "MCXMPP");
 
-			// Join MUC channel
-			this.mucManager = MultiUserChatManager.getInstanceFor(this.conn);
-			this.muc = mucManager.getMultiUserChat(mcxmpp.getPluginConfig().getChannel());
-			if (mcxmpp.getPluginConfig().getChannelPassword() == null ||
-					mcxmpp.getPluginConfig().getChannelPassword().isEmpty())
-				muc.join("MCXMPP");
-			else
-				muc.join("MCXMPP", mcxmpp.getPluginConfig().getChannelPassword());
+		// Join MUC channel
+		this.mucManager = MultiUserChatManager.getInstanceFor(this.conn);
+		this.muc = mucManager.getMultiUserChat(config.getChannel());
+		if (config.getChannelPassword() == null ||
+				config.getChannelPassword().isEmpty())
+			muc.join("MCXMPP");
+		else
+			muc.join("MCXMPP", config.getChannelPassword());
 	}
 
 	public void disconnect() {
