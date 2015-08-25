@@ -1,5 +1,7 @@
 package tk.torche.plugin.util.XMPP;
 
+import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jivesoftware.smack.MessageListener;
@@ -11,10 +13,12 @@ public class XMPPMessageListener {
 
 	private Server server;
 	private MultiUserChat muc;
+	private String mcChatFormat;
 
-	public XMPPMessageListener(Server server, MultiUserChat muc) {
+	public XMPPMessageListener(Server server, MultiUserChat muc, String mcChatFormat) {
 		this.server = server;
 		this.muc = muc;
+		this.mcChatFormat = ChatColor.translateAlternateColorCodes('&', mcChatFormat);
 		setXMPPMessageListener();
 	}
 
@@ -29,11 +33,10 @@ public class XMPPMessageListener {
 				// Don't re-send messages sent from MCXMPP
 				if (sender.equals(muc.getNickname())) return;
 
-				if (message.getBody().startsWith("!cmd "))
+				if (message.getBody().toLowerCase().startsWith("!cmd "))
 					sendMinecraftCommand(sender, message.getBody().substring(5));
 				else
 					sendMinecraftMessage(sender, message.getBody());
-
 			}
 		});
 	}
@@ -43,8 +46,9 @@ public class XMPPMessageListener {
 	}
 
 	private void sendMinecraftMessage(String sender, String body) {
-		for (Player player : server.getOnlinePlayers())
-			player.sendMessage("(XMPP) " + sender
-					+ ": " + body);
+		String message = mcChatFormat.replace("%s", sender).replace("%m", body);
+		for (Player player : server.getOnlinePlayers()) {
+			player.sendMessage(message);
+		}
 	}
 }

@@ -22,4 +22,10 @@ password: pass
 channel: channelname
 
 # If the channel is password-protected, provide the password here.
-#channelpassword: chanpass
+#channel-password: chanpass
+
+# Chat formatting for messages sent from XMPP
+# Available variables :
+# %s - sender
+# %m - message body
+mc-chat-format: '<(&cXMPP&f)%s> %m'
