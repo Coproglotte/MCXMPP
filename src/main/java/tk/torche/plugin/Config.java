@@ -5,9 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
 
-	private final String host;
 	private final String service;
-	private final int port;
 	private final String username;
 	private final String jid;
 	private final String password;
@@ -16,9 +14,7 @@ public class Config {
 	private final String mcChatFormat;
 
 	public Config(FileConfiguration fileConf) {
-		this.host = fileConf.getString("host");
 		this.service = fileConf.getString("service");
-		this.port = fileConf.getInt("port");
 		this.username = fileConf.getString("username");
 		this.jid = this.username + "@" + this.service;
 		this.password = fileConf.getString("password");
@@ -27,16 +23,8 @@ public class Config {
 		this.mcChatFormat = fileConf.getString("mc-chat-format");
 	}
 
-	public String getHost() {
-		return host;
-	}
-
 	public String getService() {
 		return service;
-	}
-
-	public int getPort() {
-		return port;
 	}
 
 	public String getJid() {

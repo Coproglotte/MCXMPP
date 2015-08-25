@@ -32,7 +32,7 @@ public class MCXMPP extends JavaPlugin {
 			getLogger().log(Level.WARNING, "Could not log in to the XMPP server or MUC channel");
 			e.printStackTrace();
 			XMPPh.disconnect();
-			getLogger().log(Level.WARNING, "Plugin disabled");
+			getLogger().log(Level.INFO, "Plugin disabled");
 		}
 	}
 
