@@ -37,6 +37,9 @@ public class XMPPHandler {
 	private MultiUserChatManager mucManager;
 	private MultiUserChat muc;
 
+	private static final String XMPPCONNECTIONERROR = "Could not log in to the XMPP server.";
+	private static final String ROOMJOININGERROR = "Could not join the MUC room.";
+
 	/**
 	 * Instanciates a new XMPPHandler by creating an XMPPTCPConnectionConfiguration.
 	 */
@@ -64,7 +67,6 @@ public class XMPPHandler {
 						.setHost(ha.getFQDN())
 						.setPort(ha.getPort())
 						.setServiceName(config.getService())
-//						.setDebuggerEnabled(true)
 						.build();
 		this.conn = new XMPPTCPConnection(connConf);
 		conn.setPacketReplyTimeout(10000);
@@ -83,13 +85,13 @@ public class XMPPHandler {
 			conn.login(config.getUsername(),
 					connConf.getPassword(), "MCXMPP");
 		} catch (XMPPException e) {
-			plugin.getLogger().log(Level.WARNING, "Could not log in to the XMPP server.");
+			plugin.getLogger().log(Level.WARNING, XMPPCONNECTIONERROR);
 			throw e;
 		} catch (IOException e) {
-			plugin.getLogger().log(Level.WARNING, "Could not log in to the XMPP server.");
+			plugin.getLogger().log(Level.WARNING, XMPPCONNECTIONERROR);
 			throw e;
 		} catch (SmackException e) {
-			plugin.getLogger().log(Level.WARNING, "Could not log in to the XMPP server.");
+			plugin.getLogger().log(Level.WARNING, XMPPCONNECTIONERROR);
 			throw e;
 		}
 
@@ -103,10 +105,10 @@ public class XMPPHandler {
 			else
 				muc.join(config.getNickname(), config.getRoomPassword());
 		} catch (XMPPException e) {
-			plugin.getLogger().log(Level.WARNING, "Could not join the MUC room.");
+			plugin.getLogger().log(Level.WARNING, ROOMJOININGERROR);
 			throw e;
 		} catch (SmackException e) {
-			plugin.getLogger().log(Level.WARNING, "Could not join the MUC room.");
+			plugin.getLogger().log(Level.WARNING, ROOMJOININGERROR);
 			throw e;
 		}
 	}
