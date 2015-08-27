@@ -21,6 +21,13 @@ import tk.torche.plugin.Config;
 import tk.torche.plugin.MCXMPP;
 
 
+/**
+ * This class provides tools to connect and disconnect from an XMPP server and
+ * join, send and receive messages in a MUC room.
+ * 
+ * @author Coproglotte
+ *
+ */
 public class XMPPHandler {
 
 	private MCXMPP plugin;
@@ -30,12 +37,19 @@ public class XMPPHandler {
 	private MultiUserChatManager mucManager;
 	private MultiUserChat muc;
 
+	/**
+	 * Instanciates a new XMPPHandler by creating an XMPPTCPConnectionConfiguration.
+	 */
 	public XMPPHandler() {
 		this.plugin = MCXMPP.getInstance();
 		this.config = plugin.getPluginConfig();
 		setXMPPConnectionConfiguration();
 	}
 
+	/**
+	 * Sets every data needed to connect to the XMPP server defined in the config.<br>
+	 * Instanciates an XMPPTCPConnectionConfiguration, then an XMPPTCPConnection.
+	 */
 	private void setXMPPConnectionConfiguration() {
 		new Java7SmackInitializer().initialize();
 
@@ -56,32 +70,50 @@ public class XMPPHandler {
 		conn.setPacketReplyTimeout(10000);
 	}
 
+	/**
+	 * Connects to the XMPP server using the previously generated XMPPTCPConnection.
+	 * @throws XMPPException Thrown when the connection or room joining fails
+	 * @throws IOException Thrown when the connection fails
+	 * @throws SmackException Thrown when the connection or room joining fails
+	 */
 	public void connect() throws XMPPException, IOException, SmackException {
 		// Connect and login
 		try {
 			conn.connect();
 			conn.login(config.getUsername(),
 					connConf.getPassword(), "MCXMPP");
-		} catch(XMPPException | IOException | SmackException e) {
-			plugin.getLogger().log(Level.WARNING, "Could not log in to the XMPP server");
+		} catch (XMPPException e) {
+			plugin.getLogger().log(Level.WARNING, "Could not log in to the XMPP server.");
+			throw e;
+		} catch (IOException e) {
+			plugin.getLogger().log(Level.WARNING, "Could not log in to the XMPP server.");
+			throw e;
+		} catch (SmackException e) {
+			plugin.getLogger().log(Level.WARNING, "Could not log in to the XMPP server.");
 			throw e;
 		}
 
-		// Join MUC channel
+		// Join MUC room
 		try {
 			this.mucManager = MultiUserChatManager.getInstanceFor(this.conn);
-			this.muc = mucManager.getMultiUserChat(config.getChannel());
-			if (config.getChannelPassword() == null ||
-					config.getChannelPassword().isEmpty())
+			this.muc = mucManager.getMultiUserChat(config.getRoom());
+			if (config.getRoomPassword() == null ||
+					config.getRoomPassword().isEmpty())
 				muc.join(config.getNickname());
 			else
-				muc.join(config.getNickname(), config.getChannelPassword());
-		} catch(XMPPException | SmackException e) {
-			plugin.getLogger().log(Level.WARNING, "Could not join MUC channel");
+				muc.join(config.getNickname(), config.getRoomPassword());
+		} catch (XMPPException e) {
+			plugin.getLogger().log(Level.WARNING, "Could not join the MUC room.");
+			throw e;
+		} catch (SmackException e) {
+			plugin.getLogger().log(Level.WARNING, "Could not join the MUC room.");
 			throw e;
 		}
 	}
 
+	/**
+	 * Leave the MUC room and disconnect from the XMPP server.
+	 */
 	public void disconnect() {
 		if (conn.isConnected()) {
 			try {
@@ -93,10 +125,19 @@ public class XMPPHandler {
 		}
 	}
 
+	/**
+	 * Gets the MUC currently handled.
+	 * @return The MUC the plugin should use
+	 */
 	public MultiUserChat getMuc() {
 		return this.muc;
 	}
 
+	/**
+	 * Sends a message on the MUC room.<br>
+	 * This is an asynchronous method.
+	 * @param message Message to be sent on XMPP
+	 */
 	public void sendXMPPMessage(final String message) {
 		new BukkitRunnable() {
 

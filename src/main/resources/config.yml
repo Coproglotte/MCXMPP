@@ -2,21 +2,20 @@
 service: example.com
 
 # The username the plugin should use to connect on the server.
-# It mustn't be in the form "user@example.com". Just put the "user" part.
 username: user
 
 # The password of the user defined above.
 password: pass
 
-# The nickname under which MCXMPP will appear in MUC channels.
+# The nickname under which MCXMPP will appear in MUC rooms.
 nickname: MCXMPP
 
-# MCXMPP joins a MUC channel (Multi-User Chat) after connection.
-# This is the name of the channel to join.
-channel: channelname
+# MCXMPP joins a MUC (Multi-User Chat) room after connection.
+# This is the JID of the room to join.
+room: myroom@conference.example.com
 
-# If the channel is password-protected, provide the password here.
-#channel-password: chanpass
+# If the room is password-protected, set the password here.
+#room-password: roompass
 
 # Chat formatting for messages sent from XMPP
 # Available variables :

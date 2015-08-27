@@ -14,12 +14,24 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 import tk.torche.plugin.MCXMPP;
 
 
+/**
+ * This class manages message listeners on XMPP conversations.
+ * 
+ * @author Coproglotte
+ *
+ */
 public class XMPPMessageListener {
 
 	private Server server;
 	private MultiUserChat muc;
 	private String mcChatFormat;
 
+	/**
+	 * Instanciates a new XMPPMessageListener.
+	 * @param server Bukkit server on which the plugin is running
+	 * @param muc Multi-user chat room to listen to
+	 * @param mcChatFormat String representing how messages should be delivered on Minecraft
+	 */
 	public XMPPMessageListener(Server server, MultiUserChat muc, String mcChatFormat) {
 		this.server = server;
 		this.muc = muc;
@@ -27,6 +39,10 @@ public class XMPPMessageListener {
 		setXMPPMessageListener();
 	}
 
+	/**
+	 * Adds a message listener on the MUC room.<br>
+	 * This method is asynchronous.
+	 */
 	private void setXMPPMessageListener() {
 		new BukkitRunnable() {
 
@@ -54,6 +70,12 @@ public class XMPPMessageListener {
 		}.runTaskAsynchronously(MCXMPP.getInstance());
 	}
 
+	/**
+	 * Sends a command to the server. The command is executed by the console.<br>
+	 * This method is synchronous.
+	 * @param sender Nickname of the room user who sent the command (UNUSED)
+	 * @param body Full command with arguments, omitting the first '/'
+	 */
 	private void sendMinecraftCommand(final String sender, final String body) {
 		new BukkitRunnable() {
 
@@ -65,6 +87,13 @@ public class XMPPMessageListener {
 		}.runTask(MCXMPP.getInstance());
 	}
 
+	/**
+	 * Sends a message to the server. The message is received by every players and formatted
+	 * according to the config file.<br>
+	 * This method is synchronous.
+	 * @param sender
+	 * @param body
+	 */
 	private void sendMinecraftMessage(final String sender, final String body) {
 		new BukkitRunnable() {
 
