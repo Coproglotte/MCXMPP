@@ -21,7 +21,7 @@ public class MCXMPP extends JavaPlugin {
 		saveDefaultConfig();
 		this.config = new Config(this.getConfig());
 
-		this.XMPPh = new XMPPHandler(config);
+		this.XMPPh = new XMPPHandler(this);
 		try {
 			XMPPh.connect();
 
@@ -29,9 +29,9 @@ public class MCXMPP extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new PlayerPresenceListener(XMPPh), this);
 			new XMPPMessageListener(getServer(), XMPPh.getMuc(), config.getMcChatFormat());
 		} catch (Exception e) {
-			getLogger().log(Level.WARNING, "Could not log in to the XMPP server or MUC channel");
 			e.printStackTrace();
 			XMPPh.disconnect();
+			setEnabled(false);
 			getLogger().log(Level.INFO, "Plugin disabled");
 		}
 	}
@@ -40,5 +40,9 @@ public class MCXMPP extends JavaPlugin {
 	public void onDisable() {
 		XMPPh.disconnect();
 		HandlerList.unregisterAll();
+	}
+
+	public Config getPluginConfig() {
+		return this.config;
 	}
 }

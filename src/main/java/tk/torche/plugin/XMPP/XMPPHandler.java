@@ -1,6 +1,7 @@
 package tk.torche.plugin.XMPP;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.SmackException;
@@ -16,18 +17,21 @@ import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
 
 import tk.torche.plugin.Config;
+import tk.torche.plugin.MCXMPP;
 
 
 public class XMPPHandler {
 
+	private MCXMPP plugin;
 	private Config config;
 	private XMPPTCPConnectionConfiguration connConf;
 	private AbstractXMPPConnection conn;
 	private MultiUserChatManager mucManager;
 	private MultiUserChat muc;
 
-	public XMPPHandler(Config config) {
-		this.config = config;
+	public XMPPHandler(MCXMPP plugin) {
+		this.config = plugin.getPluginConfig();
+		this.plugin = plugin;
 		setXMPPConnectionConfiguration();
 	}
 
@@ -51,20 +55,30 @@ public class XMPPHandler {
 		conn.setPacketReplyTimeout(10000);
 	}
 
-	public void connect() throws XMPPException, SmackException, IOException {
+	public void connect() throws XMPPException, IOException, SmackException {
 		// Connect and login
-		conn.connect();
-		conn.login(config.getUsername(),
-				connConf.getPassword(), "MCXMPP");
+		try {
+			conn.connect();
+			conn.login(config.getUsername(),
+					connConf.getPassword(), "MCXMPP");
+		} catch(XMPPException | IOException | SmackException e) {
+			plugin.getLogger().log(Level.WARNING, "Could not log in to the XMPP server");
+			throw e;
+		}
 
 		// Join MUC channel
-		this.mucManager = MultiUserChatManager.getInstanceFor(this.conn);
-		this.muc = mucManager.getMultiUserChat(config.getChannel());
-		if (config.getChannelPassword() == null ||
-				config.getChannelPassword().isEmpty())
-			muc.join(config.getNickname());
-		else
-			muc.join(config.getNickname(), config.getChannelPassword());
+		try {
+			this.mucManager = MultiUserChatManager.getInstanceFor(this.conn);
+			this.muc = mucManager.getMultiUserChat(config.getChannel());
+			if (config.getChannelPassword() == null ||
+					config.getChannelPassword().isEmpty())
+				muc.join(config.getNickname());
+			else
+				muc.join(config.getNickname(), config.getChannelPassword());
+		} catch(XMPPException | SmackException e) {
+			plugin.getLogger().log(Level.WARNING, "Could not join MUC channel");
+			throw e;
+		}
 	}
 
 	public void disconnect() {
