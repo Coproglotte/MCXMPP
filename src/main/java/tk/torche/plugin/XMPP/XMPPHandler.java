@@ -3,6 +3,7 @@ package tk.torche.plugin.XMPP;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.SmackException.NotConnectedException;
@@ -29,9 +30,9 @@ public class XMPPHandler {
 	private MultiUserChatManager mucManager;
 	private MultiUserChat muc;
 
-	public XMPPHandler(MCXMPP plugin) {
+	public XMPPHandler() {
+		this.plugin = MCXMPP.getInstance();
 		this.config = plugin.getPluginConfig();
-		this.plugin = plugin;
 		setXMPPConnectionConfiguration();
 	}
 
@@ -96,11 +97,18 @@ public class XMPPHandler {
 		return this.muc;
 	}
 
-	public void sendXMPPMessage(String message) {
-		try {
-			muc.sendMessage(message);
-		} catch (NotConnectedException e) {
-			e.printStackTrace();
-		}
+	public void sendXMPPMessage(final String message) {
+		new BukkitRunnable() {
+
+			@Override
+			public void run() {
+				try {
+					muc.sendMessage(message);
+				} catch (NotConnectedException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}.runTaskAsynchronously(MCXMPP.getInstance());
 	}
 }

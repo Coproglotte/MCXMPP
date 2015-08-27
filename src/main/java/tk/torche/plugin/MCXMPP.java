@@ -13,15 +13,17 @@ import tk.torche.plugin.players.PlayerPresenceListener;
 
 public class MCXMPP extends JavaPlugin {
 
+	private static MCXMPP instance;
 	private Config config;
 	private XMPPHandler XMPPh;
 
 	@Override
 	public void onEnable() {
+		MCXMPP.instance = this;
 		saveDefaultConfig();
 		this.config = new Config(this.getConfig());
 
-		this.XMPPh = new XMPPHandler(this);
+		this.XMPPh = new XMPPHandler();
 		try {
 			XMPPh.connect();
 
@@ -44,5 +46,9 @@ public class MCXMPP extends JavaPlugin {
 
 	public Config getPluginConfig() {
 		return this.config;
+	}
+
+	public static MCXMPP getInstance() {
+		return MCXMPP.instance;
 	}
 }
