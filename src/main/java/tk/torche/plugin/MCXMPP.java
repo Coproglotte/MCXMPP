@@ -44,7 +44,6 @@ public class MCXMPP extends JavaPlugin {
 			new XMPPMessageListener(getServer(), XMPPh.getMuc(), config.getMcChatFormat());
 		} catch (Exception e) {
 			e.printStackTrace();
-			XMPPh.disconnect();
 			setEnabled(false);
 			getLogger().log(Level.INFO, "Plugin disabled");
 		}
