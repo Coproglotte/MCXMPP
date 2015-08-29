@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import tk.torche.plugin.MCXMPP;
 import tk.torche.plugin.XMPP.XMPPHandler;
 
 
@@ -33,8 +34,11 @@ public class PlayerChatListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerMessage(AsyncPlayerChatEvent event) {
-		String message = "<" + event.getPlayer().getDisplayName()
-				+ "> " + event.getMessage();
+		String message = "<";
+		if (MCXMPP.getChat() != null)
+			message += MCXMPP.getChat().getPlayerPrefix(event.getPlayer()).replaceAll("&.", "") + " ";
+		message += event.getPlayer().getDisplayName() + "> " + event.getMessage();
+
 		XMPPh.sendXMPPMessage(message);
 	}
 

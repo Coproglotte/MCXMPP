@@ -2,7 +2,10 @@ package tk.torche.plugin;
 
 import java.util.logging.Level;
 
+import net.milkbowl.vault.chat.Chat;
+
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import tk.torche.plugin.XMPP.XMPPHandler;
@@ -21,6 +24,7 @@ import tk.torche.plugin.players.PlayerPresenceListener;
 public class MCXMPP extends JavaPlugin {
 
 	private static MCXMPP instance;
+	private static Chat chat = null;
 	private Config config;
 	private XMPPHandler XMPPh;
 
@@ -36,12 +40,19 @@ public class MCXMPP extends JavaPlugin {
 		this.config = new Config(this.getConfig());
 
 		this.XMPPh = new XMPPHandler();
+
 		try {
 			XMPPh.connect();
 
 			getServer().getPluginManager().registerEvents(new PlayerChatListener(XMPPh), this);
 			getServer().getPluginManager().registerEvents(new PlayerPresenceListener(XMPPh), this);
 			new XMPPMessageListener(getServer(), XMPPh.getMuc(), config.getMcChatFormat());
+
+			RegisteredServiceProvider<net.milkbowl.vault.chat.Chat> chatProvider =
+					getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+			if (chatProvider != null) {
+				chat = chatProvider.getProvider();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			setEnabled(false);
@@ -72,5 +83,13 @@ public class MCXMPP extends JavaPlugin {
 	 */
 	public static MCXMPP getInstance() {
 		return MCXMPP.instance;
+	}
+
+	/**
+	 * Gets the chat managager that can be used.
+	 * @return Vault Chat instance, or null if it isn't available
+	 */
+	public static Chat getChat() {
+		return MCXMPP.chat;
 	}
 }
