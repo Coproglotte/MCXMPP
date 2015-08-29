@@ -1,3 +1,4 @@
+
 package tk.torche.plugin.XMPP;
 
 import java.util.logging.Level;
@@ -46,10 +47,8 @@ public class XMPPMessageListener {
 	private void setXMPPMessageListener() {
 		new BukkitRunnable() {
 
-			@Override
 			public void run() {
 				muc.addMessageListener(new MessageListener() {
-					@Override
 					public void processMessage(Message message) {
 						// Keep only the nickname part of the JID
 						String sender = message.getFrom().substring(message.getFrom().indexOf('/') + 1);
@@ -79,7 +78,6 @@ public class XMPPMessageListener {
 	private void sendMinecraftCommand(final String sender, final String body) {
 		new BukkitRunnable() {
 
-			@Override
 			public void run() {
 				server.dispatchCommand(server.getConsoleSender(), body);		
 			}
@@ -97,7 +95,6 @@ public class XMPPMessageListener {
 	private void sendMinecraftMessage(final String sender, final String body) {
 		new BukkitRunnable() {
 
-			@Override
 			public void run() {
 				String message = mcChatFormat.replace("%s", sender).replace("%m", body);
 				server.getLogger().log(Level.INFO, message);

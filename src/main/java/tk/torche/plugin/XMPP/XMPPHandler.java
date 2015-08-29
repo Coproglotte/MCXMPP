@@ -112,7 +112,7 @@ public class XMPPHandler {
 		try {
 			// Prosody considers that every room exists
 			// TODO: Find a way to check if the room existed or was just created on Prosody
-			if (muc.createOrJoin(config.getNickname(), config.getPassword(),
+			if (muc.createOrJoin(config.getNickname(), config.getRoomPassword(),
 					dh, SmackConfiguration.getDefaultPacketReplyTimeout()))
 				muc.sendConfigurationForm(getRoomForm());
 		} catch (SmackException e) {
@@ -181,7 +181,6 @@ public class XMPPHandler {
 	public void sendXMPPMessage(final String message) {
 		new BukkitRunnable() {
 
-			@Override
 			public void run() {
 				try {
 					muc.sendMessage(message);
