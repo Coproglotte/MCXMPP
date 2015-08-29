@@ -19,6 +19,15 @@ room: myroom@conference.example.com
 
 # Chat formatting for messages sent from XMPP
 # Available variables :
-# %s - sender
-# %m - message body
-mc-chat-format: '<(&cXMPP&f)%s> %m'
+# %sender - sender
+# %message - message body
+mc-chat-format: '<(&cXMPP&f)%sender> %message'
+
+# Chat formatting for messages sent from Minecraft
+# Available variables :
+# %sender - sender
+# %message - message body
+# %prefix - Vault prefix
+# %suffix - Vault suffix
+# %world - world from which the sender sent the message
+xmpp-chat-format: '<[%world] %prefix %sender %suffix> %message'

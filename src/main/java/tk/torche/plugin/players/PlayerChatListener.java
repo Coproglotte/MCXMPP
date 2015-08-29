@@ -1,5 +1,8 @@
 package tk.torche.plugin.players;
 
+import net.milkbowl.vault.chat.Chat;
+
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -18,13 +21,15 @@ import tk.torche.plugin.XMPP.XMPPHandler;
 public class PlayerChatListener implements Listener {
 
 	private XMPPHandler XMPPh;
+	private String xmppChatFormat;
 
 	/**
 	 * Instanciates a new PlayerChatListener.
 	 * @param XMPPh The XMPPHandler managing XMPP messages
 	 */
-	public PlayerChatListener(XMPPHandler XMPPh) {
+	public PlayerChatListener(XMPPHandler XMPPh, String xmppChatFormat) {
 		this.XMPPh = XMPPh;
+		this.xmppChatFormat = xmppChatFormat;
 	}
 
 	/**
@@ -34,10 +39,19 @@ public class PlayerChatListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerMessage(AsyncPlayerChatEvent event) {
-		String message = "<";
-		if (MCXMPP.getChat() != null)
-			message += MCXMPP.getChat().getPlayerPrefix(event.getPlayer()).replaceAll("&.", "") + " ";
-		message += event.getPlayer().getDisplayName() + "> " + event.getMessage();
+		final Player player = event.getPlayer();
+		final Chat chat = MCXMPP.getChat();
+		String message = xmppChatFormat;
+
+		if (chat != null)
+			message = message.replace("%prefix", chat.getPlayerPrefix(player))
+				.replace("%suffix", chat.getPlayerSuffix(player));
+
+		message = message.replace("%sender", player.getDisplayName())
+				.replace("%world", player.getWorld().getName())
+				.replaceAll("&[^&]", "") // Remove color codes
+				.replace("&&", "&")
+				.replace("%message", event.getMessage());
 
 		XMPPh.sendXMPPMessage(message);
 	}

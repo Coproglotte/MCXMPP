@@ -96,7 +96,7 @@ public class XMPPMessageListener {
 		new BukkitRunnable() {
 
 			public void run() {
-				String message = mcChatFormat.replace("%s", sender).replace("%m", body);
+				String message = mcChatFormat.replace("%sender", sender).replace("%message", body);
 				server.getLogger().log(Level.INFO, message);
 				for (Player player : server.getOnlinePlayers()) {
 					player.sendMessage(message);

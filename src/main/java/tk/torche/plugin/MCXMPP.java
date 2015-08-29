@@ -44,7 +44,8 @@ public class MCXMPP extends JavaPlugin {
 		try {
 			XMPPh.connect();
 
-			getServer().getPluginManager().registerEvents(new PlayerChatListener(XMPPh), this);
+			getServer().getPluginManager().registerEvents(new PlayerChatListener(XMPPh, config.getXmppChatFormat()),
+					this);
 			getServer().getPluginManager().registerEvents(new PlayerPresenceListener(XMPPh), this);
 			new XMPPMessageListener(getServer(), XMPPh.getMuc(), config.getMcChatFormat());
 

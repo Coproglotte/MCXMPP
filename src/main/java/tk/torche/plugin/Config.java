@@ -19,6 +19,7 @@ public class Config {
 	private final String room;
 	private final String roomPassword;
 	private final String mcChatFormat;
+	private final String xmppChatFormat;
 
 	/**
 	 * Instanciates a new Config.
@@ -34,6 +35,7 @@ public class Config {
 		this.room = fileConf.getString("room");
 		this.roomPassword = fileConf.getString("room-password");
 		this.mcChatFormat = fileConf.getString("mc-chat-format");
+		this.xmppChatFormat = fileConf.getString("xmpp-chat-format");
 	}
 
 	/**
@@ -99,5 +101,14 @@ public class Config {
 	 */
 	public String getMcChatFormat() {
 		return mcChatFormat;
+	}
+
+	/**
+	 * Gets the representation of the formatting of XMPP chat messages sent
+	 * by the plugin.
+	 * @return String representing the formatting of XMPP chat messages
+	 */
+	public String getXmppChatFormat() {
+		return xmppChatFormat;
 	}
 }
