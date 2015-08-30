@@ -14,7 +14,7 @@ nickname: MCXMPP
 # This is the JID of the room to join.
 room: myroom@conference.example.com
 
-# If the room is password-protected, set the password here.
+# If the room is password-protected, or if you want it to be password-protected, set the password here.
 #room-password: roompass
 
 # Chat formatting for messages sent from XMPP
