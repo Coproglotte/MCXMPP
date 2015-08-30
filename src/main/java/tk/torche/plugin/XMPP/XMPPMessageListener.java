@@ -1,10 +1,8 @@
-
 package tk.torche.plugin.XMPP;
 
 import java.util.logging.Level;
 
-import net.md_5.bungee.api.ChatColor;
-
+import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -53,7 +51,7 @@ public class XMPPMessageListener {
 					public void processMessage(Message message) {
 						// Keep only the nickname part of the JID
 						String sender = message.getFrom().substring(message.getFrom().indexOf('/') + 1);
-						// Don't re-send messages sent from MCXMPP
+						// Don't re-send messages sent by MCXMPP
 						if (sender.equals(muc.getNickname())) return;
 
 						if (message.getBody().toLowerCase().startsWith(Constants.COMMAND_PREFIX))
