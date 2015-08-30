@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import tk.torche.plugin.MCXMPP;
 import tk.torche.plugin.XMPP.XMPPHandler;
+import tk.torche.plugin.util.Constants.EventPermEnum;
 
 
 /**
@@ -33,13 +34,16 @@ public class PlayerChatListener implements Listener {
 	}
 
 	/**
-	 * Listens to AsyncPlayerChatEvent in order to send the player's message
+	 * Listens to AsyncPlayerChatEvent in order to send players' messages
 	 * to XMPP when triggered.
 	 * @param event Event representing a player sending a message
 	 */
 	@EventHandler
 	public void onPlayerMessage(AsyncPlayerChatEvent event) {
 		final Player player = event.getPlayer();
+		if (PlayerInfo.isIgnored(player, EventPermEnum.MESSAGE))
+			return;
+
 		final Chat chat = MCXMPP.getChat();
 		String message = xmppChatFormat;
 
@@ -57,12 +61,15 @@ public class PlayerChatListener implements Listener {
 	}
 
 	/**
-	 * Listens to PlayerCommandPreprocessEvent in order to send the player's command
+	 * Listens to PlayerCommandPreprocessEvent in order to send players' commands
 	 * to XMPP when triggered.
 	 * @param event Event representing a player sending a command
 	 */
 	@EventHandler
 	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+		if (PlayerInfo.isIgnored(event.getPlayer(), EventPermEnum.COMMAND))
+			return;
+
 		String message = "[" + event.getPlayer().getDisplayName()
 				+ " sent command " + event.getMessage() + "]";
 		XMPPh.sendXMPPMessage(message);

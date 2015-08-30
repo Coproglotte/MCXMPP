@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import tk.torche.plugin.XMPP.XMPPHandler;
+import tk.torche.plugin.util.Constants.EventPermEnum;
 
 
 /**
@@ -33,6 +34,9 @@ public class PlayerPresenceListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
+		if (PlayerInfo.isIgnored(event.getPlayer(), EventPermEnum.PRESENCE))
+			return;
+
 		XMPPh.sendXMPPMessage("[" + event.getPlayer().getDisplayName() +
 				" joined the game]");
 	}
@@ -43,6 +47,9 @@ public class PlayerPresenceListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
+		if (PlayerInfo.isIgnored(event.getPlayer(), EventPermEnum.PRESENCE))
+			return;
+
 		XMPPh.sendXMPPMessage("[" + event.getPlayer().getDisplayName() +
 				" left the game]");
 	}

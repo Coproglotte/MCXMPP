@@ -1,4 +1,28 @@
 name: MCXMPP
 main: tk.torche.plugin.MCXMPP
-version: 0.4
+version: 0.5
+author: Coproglotte
+softdepend: ['Vault']
+
 commands:
+
+permissions:
+  mcxmpp.ignore.*:
+    description: Ignore every possible action from the player
+    default: false
+    children:
+      mcxmpp.ignore.commands: true
+      mcxmpp.ignore.messages: true
+      mcxmpp.ignore.joinquite: true
+
+  mcxmpp.ignore.commands:
+    description: Ignore commands sent
+    default: false
+
+  mcxmpp.ignore.messages:
+    description: Ignore messages sent
+    default: false
+
+  mcxmpp.ignore.joinquit:
+    description: Ignore join and quit events
+    default: false

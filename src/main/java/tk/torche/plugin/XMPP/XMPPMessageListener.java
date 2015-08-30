@@ -13,6 +13,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 
 import tk.torche.plugin.MCXMPP;
+import tk.torche.plugin.util.Constants;
 
 
 /**
@@ -55,7 +56,7 @@ public class XMPPMessageListener {
 						// Don't re-send messages sent from MCXMPP
 						if (sender.equals(muc.getNickname())) return;
 
-						if (message.getBody().toLowerCase().startsWith("!cmd "))
+						if (message.getBody().toLowerCase().startsWith(Constants.COMMAND_PREFIX))
 							sendMinecraftCommand(sender, message.getBody().substring(5));
 						else {
 							// Do nothing if the Minecraft server is empty
