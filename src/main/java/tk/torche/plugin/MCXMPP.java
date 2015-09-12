@@ -26,7 +26,7 @@ public class MCXMPP extends JavaPlugin {
 	private static MCXMPP instance;
 	private static Chat chat = null;
 	private Config config;
-	private XMPPHandler XMPPh;
+	private XMPPHandler xmppHandler;
 
 	/**
 	 * Saves the default config file on disk and/or loads it in memory.<br>
@@ -39,35 +39,38 @@ public class MCXMPP extends JavaPlugin {
 		saveDefaultConfig();
 		this.config = new Config(this.getConfig());
 
-		this.XMPPh = new XMPPHandler();
+		this.xmppHandler = new XMPPHandler();
 
 		try {
-			XMPPh.connect();
+			xmppHandler.connect();
 
-			getServer().getPluginManager().registerEvents(new PlayerChatListener(XMPPh, config.getXmppChatFormat()),
-					this);
-			getServer().getPluginManager().registerEvents(new PlayerPresenceListener(XMPPh), this);
-			new XMPPMessageListener(getServer(), XMPPh.getMuc(), config.getMcChatFormat());
+			getServer().getPluginManager().registerEvents(new PlayerChatListener(xmppHandler,
+					config.getXmppChatFormat()), this);
+			getServer().getPluginManager().registerEvents(new PlayerPresenceListener(xmppHandler), this);
+			new XMPPMessageListener(getServer(), xmppHandler.getMuc(), config.getMcChatFormat());
 
 			RegisteredServiceProvider<net.milkbowl.vault.chat.Chat> chatProvider =
 					getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-			if (chatProvider != null) {
+			if (chatProvider != null)
 				chat = chatProvider.getProvider();
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			setEnabled(false);
-			getLogger().log(Level.INFO, "Plugin disabled");
+			disable();
 		}
+	}
+
+	@Override
+	public void onDisable() {
+		disable();
 	}
 
 	/**
 	 * Disconnects from XMPP and unregisters events.
 	 */
-	@Override
-	public void onDisable() {
-		XMPPh.disconnect();
-		HandlerList.unregisterAll();
+	public void disable() {
+		xmppHandler.disconnect();
+		HandlerList.unregisterAll(this);
+		getLogger().log(Level.INFO, "Plugin disabled");
 	}
 
 	/**

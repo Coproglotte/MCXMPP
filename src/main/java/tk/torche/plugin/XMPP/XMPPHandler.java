@@ -62,7 +62,7 @@ public class XMPPHandler {
 	private void setXMPPConnectionConfiguration() {
 		new Java7SmackInitializer().initialize();
 
-		// Resolve the address used to connect to the XMPP server
+		// Get the IP address of the XMPP server
 		DNSUtil.setDNSResolver(new JavaxResolver());
 		HostAddress ha = DNSUtil.resolveXMPPDomain(config.getService(), null).get(0);
 
@@ -151,6 +151,7 @@ public class XMPPHandler {
 
 		return form;
 	}
+
 	/**
 	 * Leave the MUC room and disconnect from the XMPP server.
 	 */
@@ -158,9 +159,7 @@ public class XMPPHandler {
 		if (conn.isConnected()) {
 			try {
 				muc.leave();
-			} catch (NotConnectedException e) {
-				e.printStackTrace();
-			}
+			} catch (NotConnectedException e) {}
 			conn.disconnect();
 		}
 	}
@@ -174,7 +173,7 @@ public class XMPPHandler {
 	}
 
 	/**
-	 * Sends a message on the MUC room.<br>
+	 * Sends a message in the MUC room.<br>
 	 * This is an asynchronous method.
 	 * @param message Message to be sent on XMPP
 	 */
@@ -186,6 +185,7 @@ public class XMPPHandler {
 					muc.sendMessage(message);
 				} catch (NotConnectedException e) {
 					e.printStackTrace();
+					MCXMPP.getInstance().disable();
 				}
 			}
 

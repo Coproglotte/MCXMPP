@@ -22,6 +22,7 @@ import tk.torche.plugin.util.Constants;
  */
 public class XMPPMessageListener {
 
+
 	private Server server;
 	private MultiUserChat muc;
 	private String mcChatFormat;
