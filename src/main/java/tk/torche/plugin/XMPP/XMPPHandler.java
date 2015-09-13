@@ -179,7 +179,6 @@ public class XMPPHandler {
 	 */
 	public void sendXMPPMessage(final String message) {
 		new BukkitRunnable() {
-
 			public void run() {
 				try {
 					muc.sendMessage(message);
@@ -188,7 +187,6 @@ public class XMPPHandler {
 					MCXMPP.getInstance().disable();
 				}
 			}
-
 		}.runTaskAsynchronously(MCXMPP.getInstance());
 	}
 }

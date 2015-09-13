@@ -26,10 +26,11 @@ public class PlayerChatListener implements Listener {
 
 	/**
 	 * Instanciates a new PlayerChatListener.
-	 * @param XMPPh The XMPPHandler managing XMPP messages
+	 * @param xmppHandler The XMPPHandler managing XMPP messages
+	 * @param xmppChatFormat The representation of the formatting of XMPP messages
 	 */
-	public PlayerChatListener(XMPPHandler XMPPh, String xmppChatFormat) {
-		this.XMPPh = XMPPh;
+	public PlayerChatListener(XMPPHandler xmppHandler, String xmppChatFormat) {
+		this.XMPPh = xmppHandler;
 		this.xmppChatFormat = xmppChatFormat;
 	}
 
@@ -49,7 +50,7 @@ public class PlayerChatListener implements Listener {
 
 		if (chat != null)
 			message = message.replace("%prefix", chat.getPlayerPrefix(player))
-				.replace("%suffix", chat.getPlayerSuffix(player));
+					.replace("%suffix", chat.getPlayerSuffix(player));
 
 		message = message.replace("%sender", player.getDisplayName())
 				.replace("%world", player.getWorld().getName())

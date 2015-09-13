@@ -1,6 +1,6 @@
 name: MCXMPP
 main: tk.torche.plugin.MCXMPP
-version: 0.5
+version: 0.5.1
 author: Coproglotte
 softdepend: ['Vault']
 

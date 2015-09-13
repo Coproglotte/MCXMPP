@@ -25,17 +25,19 @@ public class XMPPMessageListener {
 
 	private Server server;
 	private MultiUserChat muc;
+	private XMPPCommandMessage xmppCommandMessage;
 	private String mcChatFormat;
 
 	/**
 	 * Instanciates a new XMPPMessageListener.
 	 * @param server Bukkit server on which the plugin is running
-	 * @param muc Multi-user chat room to listen to
+	 * @param xmppHandler The XMPPHandler managing XMPP messages
 	 * @param mcChatFormat String representing how messages should be delivered on Minecraft
 	 */
-	public XMPPMessageListener(Server server, MultiUserChat muc, String mcChatFormat) {
+	public XMPPMessageListener(Server server, XMPPHandler xmppHandler, String mcChatFormat) {
 		this.server = server;
-		this.muc = muc;
+		this.muc = xmppHandler.getMuc();
+		this.xmppCommandMessage = new XMPPCommandMessage(xmppHandler, server);
 		this.mcChatFormat = ChatColor.translateAlternateColorCodes('&', mcChatFormat);
 		setXMPPMessageListener();
 	}
@@ -51,12 +53,17 @@ public class XMPPMessageListener {
 				muc.addMessageListener(new MessageListener() {
 					public void processMessage(Message message) {
 						// Keep only the nickname part of the JID
-						String sender = message.getFrom().substring(message.getFrom().indexOf('/') + 1);
+						final String sender = message.getFrom().substring(message.getFrom().indexOf('/') + 1);
 						// Don't re-send messages sent by MCXMPP
 						if (sender.equals(muc.getNickname())) return;
 
-						if (message.getBody().toLowerCase().startsWith(Constants.COMMAND_PREFIX))
-							sendMinecraftCommand(sender, message.getBody().substring(5));
+						if (message.getBody().toLowerCase().startsWith(Constants.COMMAND_PREFIX)) {
+							final String cmd = message.getBody().substring(Constants.COMMAND_PREFIX.length());
+							if (Constants.INTERNALLY_HANDLED_CMDS.contains(cmd))
+								xmppCommandMessage.processCommand(cmd);
+							else
+								sendMinecraftCommand(sender, cmd);
+						}
 						else {
 							// Do nothing if the Minecraft server is empty
 							if (!server.getOnlinePlayers().isEmpty())

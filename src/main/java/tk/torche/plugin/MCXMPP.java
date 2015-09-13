@@ -47,12 +47,13 @@ public class MCXMPP extends JavaPlugin {
 			getServer().getPluginManager().registerEvents(new PlayerChatListener(xmppHandler,
 					config.getXmppChatFormat()), this);
 			getServer().getPluginManager().registerEvents(new PlayerPresenceListener(xmppHandler), this);
-			new XMPPMessageListener(getServer(), xmppHandler.getMuc(), config.getMcChatFormat());
 
 			RegisteredServiceProvider<net.milkbowl.vault.chat.Chat> chatProvider =
 					getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
 			if (chatProvider != null)
 				chat = chatProvider.getProvider();
+
+			new XMPPMessageListener(getServer(), xmppHandler, config.getMcChatFormat());
 		} catch (Exception e) {
 			e.printStackTrace();
 			disable();

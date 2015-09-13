@@ -1,5 +1,9 @@
 package tk.torche.plugin.util;
 
+import java.util.Arrays;
+import java.util.List;
+
+
 /**
  * This class provides several useful constants.
  * 
@@ -9,6 +13,8 @@ package tk.torche.plugin.util;
 public class Constants {
 
 	public static final String COMMAND_PREFIX = "!cmd ";
+	public static final List<String> INTERNALLY_HANDLED_CMDS =
+			Arrays.asList("list");
 
 	private static final String PERM_IGNORE_ALL = "mcxmpp.ignore.*";
 	private static final String PERM_IGNORE_MESSAGES = "mcxmpp.ignore.messages";
