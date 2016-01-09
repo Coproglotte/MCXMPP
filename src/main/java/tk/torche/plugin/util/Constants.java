@@ -16,6 +16,9 @@ public class Constants {
 	public static final List<String> INTERNALLY_HANDLED_CMDS =
 			Arrays.asList("list");
 
+	public static final String PERM_ADMIN = "mcxmpp.admin";
+	public static final String PERM_NOTICE = "mcxmpp.notice";
+
 	private static final String PERM_IGNORE_ALL = "mcxmpp.ignore.*";
 	private static final String PERM_IGNORE_MESSAGES = "mcxmpp.ignore.messages";
 	private static final String PERM_IGNORE_COMMANDS = "mcxmpp.ignore.commands";

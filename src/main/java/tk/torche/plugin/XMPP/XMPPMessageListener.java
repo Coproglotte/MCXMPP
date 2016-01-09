@@ -68,7 +68,7 @@ public class XMPPMessageListener {
 						else {
 							// Do nothing if the Minecraft server is empty
 							if (!server.getOnlinePlayers().isEmpty())
-								mcMessageSender.sendMinecraftMessage(sender, message.getBody());
+								mcMessageSender.sendGlobalMessage(sender, message.getBody());
 						}
 					}
 				});
