@@ -10,7 +10,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import tk.torche.plugin.XMPP.XMPPHandler;
 import tk.torche.plugin.XMPP.XMPPMessageListener;
-import tk.torche.plugin.players.PlayerChatListener;
+import tk.torche.plugin.mcserver.McCommandSender;
+import tk.torche.plugin.mcserver.McMessageSender;
+import tk.torche.plugin.mcserver.PlayerChatListener;
 import tk.torche.plugin.players.PlayerPresenceListener;
 
 
@@ -26,6 +28,8 @@ public class MCXMPP extends JavaPlugin {
 	private static MCXMPP instance;
 	private static Chat chat = null;
 	private Config config;
+	private McMessageSender mcMessageSender;
+	private McCommandSender mcCommandSender;
 	private XMPPHandler xmppHandler;
 
 	/**
@@ -40,6 +44,8 @@ public class MCXMPP extends JavaPlugin {
 		this.config = new Config(this.getConfig());
 
 		this.xmppHandler = new XMPPHandler();
+		this.mcMessageSender = new McMessageSender(this.getServer(), config.getMcChatFormat());
+		this.mcCommandSender = new McCommandSender(this.getServer());
 
 		try {
 			xmppHandler.connect();
@@ -53,7 +59,7 @@ public class MCXMPP extends JavaPlugin {
 			if (chatProvider != null)
 				chat = chatProvider.getProvider();
 
-			new XMPPMessageListener(getServer(), xmppHandler, config.getMcChatFormat());
+			new XMPPMessageListener(getServer(), xmppHandler, mcMessageSender, mcCommandSender);
 		} catch (Exception e) {
 			e.printStackTrace();
 			disable();

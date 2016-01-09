@@ -1,16 +1,14 @@
 package tk.torche.plugin.XMPP;
 
-import java.util.logging.Level;
-
-import org.bukkit.ChatColor;
 import org.bukkit.Server;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 
 import tk.torche.plugin.MCXMPP;
+import tk.torche.plugin.mcserver.McCommandSender;
+import tk.torche.plugin.mcserver.McMessageSender;
 import tk.torche.plugin.util.Constants;
 
 
@@ -25,8 +23,9 @@ public class XMPPMessageListener {
 
 	private Server server;
 	private MultiUserChat muc;
+	private McMessageSender mcMessageSender;
+	private McCommandSender mcCommandSender;
 	private XMPPCommandMessage xmppCommandMessage;
-	private String mcChatFormat;
 
 	/**
 	 * Instanciates a new XMPPMessageListener.
@@ -34,11 +33,13 @@ public class XMPPMessageListener {
 	 * @param xmppHandler The XMPPHandler managing XMPP messages
 	 * @param mcChatFormat String representing how messages should be delivered on Minecraft
 	 */
-	public XMPPMessageListener(Server server, XMPPHandler xmppHandler, String mcChatFormat) {
+	public XMPPMessageListener(Server server, XMPPHandler xmppHandler, McMessageSender mcMessageSender,
+			McCommandSender mcCommandSender) {
 		this.server = server;
 		this.muc = xmppHandler.getMuc();
+		this.mcMessageSender = mcMessageSender;
+		this.mcCommandSender = mcCommandSender;
 		this.xmppCommandMessage = new XMPPCommandMessage(xmppHandler, server);
-		this.mcChatFormat = ChatColor.translateAlternateColorCodes('&', mcChatFormat);
 		setXMPPMessageListener();
 	}
 
@@ -62,12 +63,12 @@ public class XMPPMessageListener {
 							if (Constants.INTERNALLY_HANDLED_CMDS.contains(cmd))
 								xmppCommandMessage.processCommand(cmd);
 							else
-								sendMinecraftCommand(sender, cmd);
+								mcCommandSender.sendMinecraftCommand(sender, cmd);
 						}
 						else {
 							// Do nothing if the Minecraft server is empty
 							if (!server.getOnlinePlayers().isEmpty())
-								sendMinecraftMessage(sender, message.getBody());
+								mcMessageSender.sendMinecraftMessage(sender, message.getBody());
 						}
 					}
 				});
@@ -76,40 +77,4 @@ public class XMPPMessageListener {
 		}.runTaskAsynchronously(MCXMPP.getInstance());
 	}
 
-	/**
-	 * Sends a command to the server. The command is executed by the console.<br>
-	 * This method is synchronous.
-	 * @param sender Nickname of the room user who sent the command (UNUSED)
-	 * @param body Full command with arguments, omitting the first '/'
-	 */
-	private void sendMinecraftCommand(final String sender, final String body) {
-		new BukkitRunnable() {
-
-			public void run() {
-				server.dispatchCommand(server.getConsoleSender(), body);		
-			}
-
-		}.runTask(MCXMPP.getInstance());
-	}
-
-	/**
-	 * Sends a message to the server. The message is received by every players and formatted
-	 * according to the config file.<br>
-	 * This method is synchronous.
-	 * @param sender
-	 * @param body
-	 */
-	private void sendMinecraftMessage(final String sender, final String body) {
-		new BukkitRunnable() {
-
-			public void run() {
-				String message = mcChatFormat.replace("%sender", sender).replace("%message", body);
-				server.getLogger().log(Level.INFO, message);
-				for (Player player : server.getOnlinePlayers()) {
-					player.sendMessage(message);
-				}
-			}
-
-		}.runTask(MCXMPP.getInstance());
-	}
 }

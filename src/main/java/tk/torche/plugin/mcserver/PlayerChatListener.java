@@ -1,4 +1,4 @@
-package tk.torche.plugin.players;
+package tk.torche.plugin.mcserver;
 
 import net.milkbowl.vault.chat.Chat;
 
@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import tk.torche.plugin.MCXMPP;
 import tk.torche.plugin.XMPP.XMPPHandler;
+import tk.torche.plugin.players.PlayerInfo;
 import tk.torche.plugin.util.Constants.EventPermEnum;
 
 
