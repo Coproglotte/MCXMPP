@@ -39,10 +39,10 @@ public class XMPPCommandMessage {
 	 * @param cmd The command that has been sent
 	 */
 	void processCommand(final String cmd) {
-		switch (cmd) {
-		case "list" :
+		if (cmd.toLowerCase().equals("list"))
 			list();
-		}
+		else
+			xmppHandler.sendXMPPMessage(cmd + ": not implemented yet.");
 	}
 
 	/**
@@ -52,7 +52,6 @@ public class XMPPCommandMessage {
 	 */
 	private void list() {
 		new BukkitRunnable() {
-			@Override
 			public void run() {
 				final boolean isServerEmpty;
 				final ArrayList<Player> players;
