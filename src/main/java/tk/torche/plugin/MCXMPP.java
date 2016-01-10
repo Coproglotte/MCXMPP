@@ -31,6 +31,7 @@ public class MCXMPP extends JavaPlugin {
 	private McMessageSender mcMessageSender;
 	private McCommandSender mcCommandSender;
 	private XMPPHandler xmppHandler;
+	private CommandsHandler commandsHandler;
 
 	/**
 	 * Saves the default config file on disk and/or loads it in memory.<br>
@@ -44,15 +45,18 @@ public class MCXMPP extends JavaPlugin {
 		this.config = new Config(this.getConfig());
 
 		this.xmppHandler = new XMPPHandler();
+		this.commandsHandler = new CommandsHandler(xmppHandler);
 		this.mcMessageSender = new McMessageSender(this.getServer(), config.getMcChatFormat());
 		this.mcCommandSender = new McCommandSender(this.getServer());
 
 		try {
 			xmppHandler.connect(mcMessageSender);
+			xmppHandler.joinMucRoom();
 
 			getServer().getPluginManager().registerEvents(new PlayerChatListener(xmppHandler,
 					config.getXmppChatFormat()), this);
 			getServer().getPluginManager().registerEvents(new PlayerPresenceListener(xmppHandler), this);
+			getCommand("mcxmpp").setExecutor(commandsHandler);
 
 			RegisteredServiceProvider<net.milkbowl.vault.chat.Chat> chatProvider =
 					getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);

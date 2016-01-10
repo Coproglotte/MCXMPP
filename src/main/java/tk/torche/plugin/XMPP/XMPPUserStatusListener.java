@@ -11,6 +11,7 @@ public class XMPPUserStatusListener implements UserStatusListener {
 	private McMessageSender mcMessageSender;
 
 	public XMPPUserStatusListener(McMessageSender mcMessageSender) {
+		isInRoom = true;
 		this.mcMessageSender = mcMessageSender;
 	}
 

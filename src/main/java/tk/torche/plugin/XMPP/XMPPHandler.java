@@ -82,15 +82,27 @@ public class XMPPHandler {
 	}
 
 	/**
-	 * Connects to the XMPP server using the previously generated XMPPTCPConnection.
+	 * Connects to the XMPP server using the previously generated XMPPTCPConnection and a new instance of
+	 * McMessageSender.
+	 * @param mcMessageSender McMessageSender instance
 	 * @throws XMPPException Thrown when the connection or room joining fails
 	 * @throws IOException Thrown when the connection fails
 	 * @throws SmackException Thrown when the connection or room joining fails
 	 */
 	public void connect(McMessageSender mcMessageSender) throws XMPPException, IOException, SmackException {
-		final String RESOURCE = "MCXMPP";
 		connectionListener = new XMPPConnectionListener(mcMessageSender);
 		mucStatusListener = new XMPPUserStatusListener(mcMessageSender);
+		connect();
+	}
+
+	/**
+	 * Connects to the XMPP server using the previously generated XMPPTCPConnection.
+	 * @throws XMPPException Thrown when the connection fails
+	 * @throws IOException Thrown when the connection fails
+	 * @throws SmackException Thrown when the connection or room joining fails
+	 */
+	public void connect() throws XMPPException, IOException, SmackException {
+		final String RESOURCE = "MCXMPP";
 
 		// Connect and login
 		try {
@@ -108,7 +120,17 @@ public class XMPPHandler {
 			throw e;
 		}
 
-		// Join MUC room
+		// Add listeners
+		muc.addUserStatusListener(mucStatusListener);
+		conn.addConnectionListener(connectionListener);
+	}
+
+	/**
+	 * Join the MUC room defined in the config.
+	 * @throws SmackException Thrown when the MUC room joining fails
+	 * @throws XMPPException Thrown when the MUC room joining fails
+	 */
+	public void joinMucRoom() throws SmackException, XMPPException {
 		this.mucManager = MultiUserChatManager.getInstanceFor(this.conn);
 		this.muc = mucManager.getMultiUserChat(config.getRoom());
 		DiscussionHistory dh = new DiscussionHistory();
@@ -127,10 +149,6 @@ public class XMPPHandler {
 			plugin.getLogger().log(Level.WARNING, ROOMJOININGERROR);
 			throw e;
 		}
-
-		// Add listeners
-		muc.addUserStatusListener(mucStatusListener);
-		conn.addConnectionListener(connectionListener);
 	}
 
 	/**
@@ -173,6 +191,22 @@ public class XMPPHandler {
 			conn.removeConnectionListener(connectionListener);
 			conn.disconnect();
 		}
+	}
+
+	/**
+	 * Gets the service name of the server we are connected to.
+	 * @return Service name of the server
+	 */
+	public String getServer() {
+		return conn.getServiceName();
+	}
+
+	/**
+	 * Gets the JID used on the server.
+	 * @return JID used on the server
+	 */
+	public String getJID() {
+		return conn.getUser();
 	}
 
 	/**

@@ -12,6 +12,7 @@ public class XMPPConnectionListener implements ConnectionListener {
 	private McMessageSender mcMessageSender;
 
 	public XMPPConnectionListener(McMessageSender mcMessageSender) {
+		isConnected = true;
 		this.mcMessageSender = mcMessageSender; 
 	}
 

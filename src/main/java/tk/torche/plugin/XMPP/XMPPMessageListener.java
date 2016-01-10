@@ -21,7 +21,6 @@ import tk.torche.plugin.util.Constants;
 public class XMPPMessageListener {
 
 
-	private Server server;
 	private MultiUserChat muc;
 	private McMessageSender mcMessageSender;
 	private McCommandSender mcCommandSender;
@@ -35,7 +34,6 @@ public class XMPPMessageListener {
 	 */
 	public XMPPMessageListener(Server server, XMPPHandler xmppHandler, McMessageSender mcMessageSender,
 			McCommandSender mcCommandSender) {
-		this.server = server;
 		this.muc = xmppHandler.getMuc();
 		this.mcMessageSender = mcMessageSender;
 		this.mcCommandSender = mcCommandSender;
