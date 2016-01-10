@@ -24,6 +24,7 @@ import org.jivesoftware.smackx.xdata.Form;
 
 import tk.torche.plugin.Config;
 import tk.torche.plugin.MCXMPP;
+import tk.torche.plugin.mcserver.McMessageSender;
 
 
 /**
@@ -41,6 +42,8 @@ public class XMPPHandler {
 	private AbstractXMPPConnection conn;
 	private MultiUserChatManager mucManager;
 	private MultiUserChat muc;
+	private XMPPConnectionListener connectionListener;
+	private XMPPUserStatusListener mucStatusListener;
 
 	private static final String XMPPCONNECTIONERROR = "Could not log in to the XMPP server.";
 	private static final String ROOMJOININGERROR = "Could not join the MUC room.";
@@ -84,8 +87,10 @@ public class XMPPHandler {
 	 * @throws IOException Thrown when the connection fails
 	 * @throws SmackException Thrown when the connection or room joining fails
 	 */
-	public void connect() throws XMPPException, IOException, SmackException {
+	public void connect(McMessageSender mcMessageSender) throws XMPPException, IOException, SmackException {
 		final String RESOURCE = "MCXMPP";
+		connectionListener = new XMPPConnectionListener(mcMessageSender);
+		mucStatusListener = new XMPPUserStatusListener(mcMessageSender);
 
 		// Connect and login
 		try {
@@ -122,6 +127,10 @@ public class XMPPHandler {
 			plugin.getLogger().log(Level.WARNING, ROOMJOININGERROR);
 			throw e;
 		}
+
+		// Add listeners
+		muc.addUserStatusListener(mucStatusListener);
+		conn.addConnectionListener(connectionListener);
 	}
 
 	/**
@@ -158,8 +167,10 @@ public class XMPPHandler {
 	public void disconnect() {
 		if (conn.isConnected()) {
 			try {
+				muc.removeUserStatusListener(mucStatusListener);
 				muc.leave();
 			} catch (NotConnectedException e) {}
+			conn.removeConnectionListener(connectionListener);
 			conn.disconnect();
 		}
 	}

@@ -60,15 +60,15 @@ public class XMPPMessageListener {
 
 						if (message.getBody().toLowerCase().startsWith(Constants.COMMAND_PREFIX)) {
 							final String cmd = message.getBody().substring(Constants.COMMAND_PREFIX.length());
-							if (Constants.INTERNALLY_HANDLED_CMDS.contains(cmd))
+							if (Constants.IMPLEMENTED_CMDS.contains(cmd)) {
 								xmppCommandMessage.processCommand(cmd);
-							else
+							}
+							else {
 								mcCommandSender.sendMinecraftCommand(sender, cmd);
+							}
 						}
 						else {
-							// Do nothing if the Minecraft server is empty
-							if (!server.getOnlinePlayers().isEmpty())
-								mcMessageSender.sendGlobalMessage(sender, message.getBody());
+							mcMessageSender.sendGlobalMessage(sender, message.getBody());
 						}
 					}
 				});

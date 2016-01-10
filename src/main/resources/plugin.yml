@@ -11,7 +11,7 @@ permissions:
     description: Gives admin rights to the player
     default: false
     children:
-      mcxmpp.notice
+      mcxmpp.notice: true
 
   mcxmpp.notice:
     description: Send notices to the player

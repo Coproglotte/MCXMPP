@@ -50,7 +50,7 @@ public class McMessageSender {
 		new BukkitRunnable() {
 
 			public void run() {
-				String message = "&7&oMCXMPP NOTICE: " + body;
+				String message = ChatColor.translateAlternateColorCodes('&', "&7&oMCXMPP NOTICE: " + body);
 				server.getLogger().log(Level.INFO, message);
 				for (Player player : server.getOnlinePlayers()) {
 					if (player.hasPermission(Constants.PERM_NOTICE)) {

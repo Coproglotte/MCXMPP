@@ -13,7 +13,7 @@ import java.util.List;
 public class Constants {
 
 	public static final String COMMAND_PREFIX = "!cmd ";
-	public static final List<String> INTERNALLY_HANDLED_CMDS =
+	public static final List<String> IMPLEMENTED_CMDS =
 			Arrays.asList("list");
 
 	public static final String PERM_ADMIN = "mcxmpp.admin";
