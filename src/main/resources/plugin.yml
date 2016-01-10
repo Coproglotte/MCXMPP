@@ -13,13 +13,13 @@ commands:
 permissions:
   mcxmpp.admin:
     description: Gives admin powers to the player
-    default: false
+    default: op
     children:
       mcxmpp.notice: true
 
   mcxmpp.notice:
     description: Allows to receive notices from the plugin
-    default: false
+    default: op
 
   mcxmpp.ignore.*:
     description: Ignore every possible action from the player
