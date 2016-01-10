@@ -1,13 +1,13 @@
 name: MCXMPP
 main: tk.torche.plugin.MCXMPP
-version: 0.5.2.0
+version: 0.5.2.1
 author: Coproglotte
 softdepend: ['Vault']
 
 commands:
   mcxmpp:
     description: 'Global MCXMPP plugin commands'
-    usage: '/<command> help'
+    usage: 'For a list of commands, type /<command> help'
     aliases: [xmpp]
 
 permissions:

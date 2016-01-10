@@ -38,6 +38,7 @@ public class XMPPHandler {
 
 	private MCXMPP plugin;
 	private Config config;
+	private McMessageSender mcMessageSender;
 	private XMPPTCPConnectionConfiguration connConf;
 	private AbstractXMPPConnection conn;
 	private MultiUserChatManager mucManager;
@@ -90,8 +91,7 @@ public class XMPPHandler {
 	 * @throws SmackException Thrown when the connection or room joining fails
 	 */
 	public void connect(McMessageSender mcMessageSender) throws XMPPException, IOException, SmackException {
-		connectionListener = new XMPPConnectionListener(mcMessageSender);
-		mucStatusListener = new XMPPUserStatusListener(mcMessageSender);
+		this.mcMessageSender = mcMessageSender;
 		connect();
 	}
 
@@ -120,8 +120,8 @@ public class XMPPHandler {
 			throw e;
 		}
 
-		// Add listeners
-		muc.addUserStatusListener(mucStatusListener);
+		// Add connection listener
+		connectionListener = new XMPPConnectionListener(mcMessageSender);
 		conn.addConnectionListener(connectionListener);
 	}
 
@@ -149,6 +149,10 @@ public class XMPPHandler {
 			plugin.getLogger().log(Level.WARNING, ROOMJOININGERROR);
 			throw e;
 		}
+
+		// Add MUC room status listener
+		mucStatusListener = new XMPPUserStatusListener(mcMessageSender);
+		muc.addUserStatusListener(mucStatusListener);
 	}
 
 	/**
