@@ -184,14 +184,21 @@ public class XMPPHandler {
 	}
 
 	/**
-	 * Leave the MUC room and disconnect from the XMPP server.
+	 * Leave the MUC room
+	 * @throws NotConnectedException Thrown if the bot wasn't connected to a server
 	 */
-	public void disconnect() {
+	public void leaveMucRoom() throws NotConnectedException {
+		muc.removeUserStatusListener(mucStatusListener);
+		muc.leave();
+	}
+
+	/**
+	 * Leave the MUC room and disconnect from the XMPP server.
+	 * @throws NotConnectedException Thrown if the bot wasn't connected to a server
+	 */
+	public void disconnect() throws NotConnectedException {
 		if (conn.isConnected()) {
-			try {
-				muc.removeUserStatusListener(mucStatusListener);
-				muc.leave();
-			} catch (NotConnectedException e) {}
+			leaveMucRoom();
 			conn.removeConnectionListener(connectionListener);
 			conn.disconnect();
 		}

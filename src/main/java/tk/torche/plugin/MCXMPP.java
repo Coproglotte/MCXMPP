@@ -7,6 +7,7 @@ import net.milkbowl.vault.chat.Chat;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jivesoftware.smack.SmackException.NotConnectedException;
 
 import tk.torche.plugin.XMPP.XMPPHandler;
 import tk.torche.plugin.XMPP.XMPPMessageListener;
@@ -79,7 +80,9 @@ public class MCXMPP extends JavaPlugin {
 	 * Disconnects from XMPP and unregisters events.
 	 */
 	public void disable() {
-		xmppHandler.disconnect();
+		try {
+			xmppHandler.disconnect();
+		} catch (NotConnectedException e) {}
 		HandlerList.unregisterAll(this);
 		getLogger().log(Level.INFO, "Plugin disabled");
 	}
